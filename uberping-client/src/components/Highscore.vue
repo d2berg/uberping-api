@@ -8,10 +8,12 @@
             <span>{{user.name}}</span>
           </md-card-header>
           <md-card-content>
-            <md-chip title="Rating" class="md-primary"><md-icon>grade</md-icon> {{user.rating.toFixed(1)}}</md-chip>
+            <md-chip title="Rating" class="md-primary md-mini"><md-icon>grade</md-icon> {{user.rating.toFixed(1)}}</md-chip>
+            <p>
             <md-chip title="Streak" class="md-secondary"><md-icon>schedule</md-icon> {{user.streak}}</md-chip>
             <md-chip title="Wins" class="md-primary"><md-icon>thumb_up</md-icon> {{user.wins }}</md-chip>
             <md-chip title="Losses" class="md-accent"><md-icon>thumb_down</md-icon> {{user.losses}}</md-chip>
+            </p>
           </md-card-content>
         </md-card>
       </md-list-item>
