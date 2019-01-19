@@ -3,11 +3,12 @@
     <div class="main">
       <router-view />
     </div>
-    
-    <div class="bar">
-      <router-link to="/game">Game</router-link>
-      <router-link to="/highscore">Highscore</router-link>
-      <router-link to="/matches">Matches</router-link>
+    <div>
+    <md-bottom-bar md-sync-route>
+        <md-bottom-bar-item href="#/game" md-label="Play" md-icon="input"></md-bottom-bar-item>
+        <md-bottom-bar-item href="#/highscore" md-label="Highscore" md-icon="assessment"></md-bottom-bar-item>
+        <md-bottom-bar-item href="#/matches" md-label="Matches" md-icon="list"></md-bottom-bar-item>
+      </md-bottom-bar>
     </div>
   </div>
 </template>

@@ -1,25 +1,25 @@
 <template>
   <div>
-    <table>
+    <md-table>
       <thead>
-        <th>Rank</th>
-        <th>Name</th>
-        <th>Rating</th>
-        <th>Streak</th>
-        <th>Wins</th>
-        <th>Losses</th>
+        <md-table-head>Rank</md-table-head>
+        <md-table-head>Name</md-table-head>
+        <md-table-head>Rating</md-table-head>
+        <md-table-head>Streak</md-table-head>
+        <md-table-head>Wins</md-table-head>
+        <md-table-head>Losses</md-table-head>
       </thead>
       <tbody>
-        <tr v-for="(user, index) in users" v-bind:key="user.id">
-          <td>{{index+1}}</td>
-          <td>{{user.name}}</td>
-          <td>{{user.rating.toFixed(1)}}</td>
-          <td>{{user.streak}}</td>
-          <td>{{user.wins}}</td>
-          <td>{{user.losses}}</td>
-        </tr>
+        <md-table-row v-for="(user, index) in users" v-bind:key="user.id">
+          <md-table-cell>{{index+1}}</md-table-cell>
+          <md-table-cell>{{user.name}}</md-table-cell>
+          <md-table-cell>{{user.rating.toFixed(1)}}</md-table-cell>
+          <md-table-cell>{{user.streak}}</md-table-cell>
+          <md-table-cell>{{user.wins}}</md-table-cell>
+          <md-table-cell>{{user.losses}}</md-table-cell>
+        </md-table-row>
       </tbody>
-    </table>
+    </md-table>
   </div>
 </template>
 

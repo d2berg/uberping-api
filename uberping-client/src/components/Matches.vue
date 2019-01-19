@@ -1,21 +1,22 @@
 <template>
   <div>
-    <table>
+    <md-table>
       <thead>
-        <th>Time</th>
-        <th>Home</th>
-        <th>Score</th>
-        <th>Away</th>
+        <md-table-head>Time</md-table-head>
+        <md-table-head>Home</md-table-head>
+        <md-table-head>Score</md-table-head>
+        <md-table-head>Away</md-table-head>
       </thead>
       <tbody>
-        <tr v-for="(match) in matches" v-bind:key="match.id">
-          <td>{{new Date(match.timestamp).toLocaleDateString()}}</td>
-          <td :class="match.homeScore > match.awayScore ? 'bold': ''">{{match.home}}</td>
-          <td>{{match.homeScore}} - {{match.awayScore}}</td>
-          <td :class="match.homeScore < match.awayscore ? 'bold': ''">{{match.away}}</td>
-        </tr>
+        <md-table-row v-for="(match) in matches" v-bind:key="match._id">
+          <md-table-cell>{{match.timestamp.toLocaleDateString()}}</md-table-cell>
+          <md-table-cell :class="match.homeScore > match.awayScore ? 'bold': ''">{{match.home}}</md-table-cell>
+          <md-table-cell>{{match.homeScore}} - {{match.awayScore}}</md-table-cell>
+          <md-table-cell :class="match.homeScore < match.awayscore ? 'bold': ''">{{match.away}}</md-table-cell>
+          <md-table-cell><md-button @click="remove(match._id)" class="md-fab md-mini"><md-icon>delete</md-icon></md-button></md-table-cell>
+        </md-table-row>
       </tbody>
-    </table>  
+    </md-table>  
   </div>
 </template>
 
@@ -43,17 +44,24 @@ export default {
           .then(response => (this.rawmatches = response.data));
       });
   },
+  methods: {
+    remove(id){
+      axios.delete(`api/matches/${id}`);
+    }
+  },
   computed: {
     matches(){
-      return this.rawmatches.map(m => {
-        return {
-          timestamp: m.timestamp,
-          home: this.usermap[m.homeId],
-          homeScore: m.homeScore,
-          awayScore: m.awayScore,
-          away: this.usermap[m.awayId],
-        };
-        });
+      return this.rawmatches
+        .map(m => {
+          return {
+            timestamp: new Date(m.timestamp),
+            home: this.usermap[m.homeId],
+            homeScore: m.homeScore,
+            awayScore: m.awayScore,
+            away: this.usermap[m.awayId],
+          };
+        })
+        .sort((a, b) => b.timestamp - a.timestamp);
     }
   }
 }
