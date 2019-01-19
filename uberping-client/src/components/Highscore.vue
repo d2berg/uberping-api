@@ -1,25 +1,21 @@
 <template>
   <div>
-    <md-table>
-      <thead>
-        <md-table-head>Rank</md-table-head>
-        <md-table-head>Name</md-table-head>
-        <md-table-head>Rating</md-table-head>
-        <md-table-head>Streak</md-table-head>
-        <md-table-head>Wins</md-table-head>
-        <md-table-head>Losses</md-table-head>
-      </thead>
-      <tbody>
-        <md-table-row v-for="(user, index) in users" v-bind:key="user.id">
-          <md-table-cell>{{index+1}}</md-table-cell>
-          <md-table-cell>{{user.name}}</md-table-cell>
-          <md-table-cell>{{user.rating.toFixed(1)}}</md-table-cell>
-          <md-table-cell>{{user.streak}}</md-table-cell>
-          <md-table-cell>{{user.wins}}</md-table-cell>
-          <md-table-cell>{{user.losses}}</md-table-cell>
-        </md-table-row>
-      </tbody>
-    </md-table>
+    <md-list>
+      <md-list-item v-for="(user, index) in users" v-bind:key="user.id">
+        <md-card>
+          <md-card-header>
+            <span>{{index+1}}. </span>
+            <span>{{user.name}}</span>
+          </md-card-header>
+          <md-card-content>
+            <md-chip title="Rating" class="md-primary"><md-icon>grade</md-icon> {{user.rating.toFixed(1)}}</md-chip>
+            <md-chip title="Streak" class="md-secondary"><md-icon>schedule</md-icon> {{user.streak}}</md-chip>
+            <md-chip title="Wins" class="md-primary"><md-icon>thumb_up</md-icon> {{user.wins }}</md-chip>
+            <md-chip title="Losses" class="md-accent"><md-icon>thumb_down</md-icon> {{user.losses}}</md-chip>
+          </md-card-content>
+        </md-card>
+      </md-list-item>
+    </md-list>
   </div>
 </template>
 

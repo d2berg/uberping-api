@@ -1,22 +1,26 @@
 <template>
   <div>
-    <md-table>
-      <thead>
-        <md-table-head>Time</md-table-head>
-        <md-table-head>Home</md-table-head>
-        <md-table-head>Score</md-table-head>
-        <md-table-head>Away</md-table-head>
-      </thead>
-      <tbody>
-        <md-table-row v-for="(match) in matches" v-bind:key="match._id">
-          <md-table-cell>{{match.timestamp.toLocaleDateString()}}</md-table-cell>
-          <md-table-cell :class="match.homeScore > match.awayScore ? 'bold': ''">{{match.home}}</md-table-cell>
-          <md-table-cell>{{match.homeScore}} - {{match.awayScore}}</md-table-cell>
-          <md-table-cell :class="match.homeScore < match.awayscore ? 'bold': ''">{{match.away}}</md-table-cell>
-          <md-table-cell><md-button @click="remove(match._id)" class="md-fab md-mini"><md-icon>delete</md-icon></md-button></md-table-cell>
-        </md-table-row>
-      </tbody>
-    </md-table>  
+    <md-list>
+      <md-list-item v-for="(match, index) in matches" v-bind:key="match.id">
+        <md-card>
+          <md-card-header>
+            <span>{{match.timestamp.toLocaleString()}}</span>
+          </md-card-header>
+          <md-card-content>
+            <label title="Home player" class="md-primary">
+              <md-icon>user</md-icon> {{match.home}}
+            </label>
+            <md-chip title="Winning score" class="md-primary"> {{match.homeScore }}</md-chip>
+            -
+            <md-chip title="Losing score" class="md-accent"> {{match.awayScore}}</md-chip>
+            <label title="Home player" class="md-primary">
+              <md-icon>user</md-icon> {{match.away}}
+            </label>
+            <md-button @click="remove(match.id, index)" class="md-fab md-mini"><md-icon>delete</md-icon></md-button>
+          </md-card-content>
+        </md-card>
+      </md-list-item>
+    </md-list>
   </div>
 </template>
 
@@ -46,7 +50,8 @@ export default {
   },
   methods: {
     remove(id){
-      axios.delete(`api/matches/${id}`);
+      const index = this.rawmatches.findIndex(m => m._id === id);
+      axios.delete(`api/matches/${id}`).then(() => this.rawmatches.splice(index, 1))
     }
   },
   computed: {
@@ -54,6 +59,7 @@ export default {
       return this.rawmatches
         .map(m => {
           return {
+            id: m._id,
             timestamp: new Date(m.timestamp),
             home: this.usermap[m.homeId],
             homeScore: m.homeScore,
