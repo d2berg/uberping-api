@@ -2,13 +2,18 @@ const mongoose = require('mongoose');
 module.exports = mongoose.model('User', { 
   name: String, 
   rating: {type:Number, default: 1500}, 
-  uncertainty: {type: Number, default: 350},
+  rd: {type: Number, default: 200},
+  vol: {type: Number, default: 0.06},
+  wins: {type: Number, default: 0},
+  losses: {type: Number, default: 0},
+  streak: {type: Number, default: 0},
   lastGame: {type: Date, default: new Date()},
-  rank: Number, 
-  matches: [
+  ratingTimestamp: {type: Date, default: new Date()},
+  ratingHistory: [
     {
-      userScore: Number,
-      opponentScore: Number,
+      rating: {type:Number, default: 1500}, 
+      rd: {type: Number, default: 200},
+      vol: {type: Number, default: 0.06},
       timestamp: Date
     }
   ]

@@ -1,5 +1,19 @@
-const db = require('./db/db');
 
+const glicko2 = require('glicko2');
+const settings = {
+  // tau : "Reasonable choices are between 0.3 and 1.2, though the system should
+  //       be tested to decide which value results in greatest predictive accuracy."
+  tau : 0.5,
+  // rating : default rating
+  rating : 1500,
+  //rd : Default rating deviation
+  //     small number = good confidence on the rating accuracy
+  rd : 200,
+  //vol : Default volatility (expected fluctation on the player rating)
+  vol : 0.06
+};
+const ranking = new glicko2.Glicko2(settings);
+const db = require('./db/db');
 const initialUncertainty = 350
 const uncertaintyIncreaseByTime = 0.03
 
@@ -8,7 +22,7 @@ const g = (RD) => {
   return 1/Math.sqrt(1 + (3* Math.pow(q, 2) * Math.pow(RD, 2)) / Math.pow(Math.PI,2))
 }
 
-const calculate = (w, l,  match) => {
+const calculateOld = (w, l,  match) => {
   // constants:
   q = Math.log(10)/400
   q_squared = Math.pow(q, 2)
@@ -50,9 +64,9 @@ const update = (match) => {
     const homeUser = await db.User.findById(match.homeId);
     const awayUser = await db.User.findById(match.awayId);
     if(match.homeScore > match.awayScore){
-      calculate(homeUser, awayUser, match);
+      calculateOld(homeUser, awayUser, match);
     }else {
-      calculate(awayUser, homeUser, match);
+      calculateOld(awayUser, homeUser, match);
     }
     await homeUser.save();
     await awayUser.save();
@@ -61,6 +75,57 @@ const update = (match) => {
 
 }
 
+const calculate = async () => {
+  const matches = await db.Match.find({rated: {$in: [null, false]}}).sort({timestamp: 1});
+  const users = await db.User.find();
+  const extendedUsers = users.map(user => {
+    const player = ranking.makePlayer(user.rating, user.rd, user.vol);
+    return {
+      dbUser: user,
+      player
+    };
+  });
+  const rankMatches = [];
+  matches.forEach(match => {
+    const home = extendedUsers.find(user => user.dbUser.id === match.homeId.toString());
+    const away = extendedUsers.find(user => user.dbUser.id === match.awayId.toString());
+    if(match.homeScore > match.awayScore){
+      rankMatches.push([home.player, away.player, 1]);
+      home.dbUser.streak >= 0 ? home.dbUser.streak++ : home.dbUser.streak = 1;
+      home.dbUser.wins++;
+      away.dbUser.streak >= 0 ? away.dbUser.streak = -1 : away.dbUser.streak--;
+      away.dbUser.losses++;
+    }else if (match.homeScore < match.awayScore){
+      rankMatches.push([home.player, away.player, 0]);
+      away.dbUser.streak >= 0 ? away.dbUser.streak++ : away.dbUser.streak = 1;
+      away.dbUser.wins++;
+      home.dbUser.streak >= 0 ? home.dbUser.streak = -1 : home.dbUser.streak--;
+      home.dbUser.losses++;
+    }else {
+      rankMatches.push([home.player, away.player, 0.5]);
+    }
+    match.rated = true;
+  });
+  ranking.updateRatings(rankMatches);
+  const tasks = []
+  extendedUsers.forEach(user => {
+    user.dbUser.rating = user.player.getRating();
+    user.dbUser.rd = user.player.getRd();
+    user.dbUser.vol = user.player.getVol();
+    user.dbUser.ratingTimestamp = new Date();
+    user.dbUser.ratingHistory.push({
+      rating: user.dbUser.rating,
+      rd: user.dbUser.rd,
+      vol: user.dbUser.vol,
+      timestamp: user.dbUser.ratingTimestamp
+    });
+    tasks.push(user.dbUser.save());
+  });
+  matches.forEach(match => tasks.push(match.save()));
+  return Promise.all(tasks);
+}
+
 module.exports = {
-  update
+  update,
+  calculate,
 };
