@@ -17,7 +17,7 @@
       </md-select>
     </md-field>
     <md-field><label>{{homeUser ? users.find(u => u._id === homeUser).name : 'Home'}} score</label><md-input type="number" v-model="homeScore" /></md-field>
-    <md-field><label>{{awayUser ? users.find(u => u._id === awayUser).name : 'Home'}} score</label><md-input type="number" v-model="awayScore" /></md-field>
+    <md-field><label>{{awayUser ? users.find(u => u._id === awayUser).name : 'Away'}} score</label><md-input type="number" v-model="awayScore" /></md-field>
     <md-button class="md-primary md-raised" @click="register">Register</md-button>
     <md-field><label>{{status}}</label></md-field>
     </md-content>
