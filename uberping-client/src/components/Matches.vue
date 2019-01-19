@@ -1,5 +1,6 @@
 <template>
   <div>
+    <md-progress-bar v-if="loading" md-mode="indeterminate"></md-progress-bar>
     <md-list>
       <md-list-item v-for="(match, index) in matches" v-bind:key="match.id">
         <md-card>
@@ -7,16 +8,10 @@
             <span>{{match.timestamp.toLocaleString()}}</span>
           </md-card-header>
           <md-card-content>
-            <label title="Home player" class="md-primary">
-              <md-icon>user</md-icon> {{match.home}}
-            </label>
-            <md-chip title="Winning score" class="md-primary"> {{match.homeScore }}</md-chip>
-            -
-            <md-chip title="Losing score" class="md-accent"> {{match.awayScore}}</md-chip>
-            <label title="Home player" class="md-primary">
-              <md-icon>user</md-icon> {{match.away}}
-            </label>
-            <md-button @click="remove(match.id, index)" class="md-fab md-mini"><md-icon>delete</md-icon></md-button>
+            <md-chip title="Winning score" class="md-primary">{{match.home}} | <b>{{match.homeScore }}</b></md-chip>
+            <span> -- </span>
+            <md-chip title="Losing score" class="md-accent"><b>{{match.awayScore}}</b> | {{match.away}}</md-chip>
+            <md-button @click="remove(match.id, index)" class="md-mini"><md-icon>delete</md-icon></md-button>
           </md-card-content>
         </md-card>
       </md-list-item>
@@ -35,6 +30,7 @@ export default {
       users: null,
       rawmatches: [],
       usermap: {},
+      loading: true,
     }
   },
    mounted () {
@@ -45,7 +41,10 @@ export default {
         this.users = users
         users.forEach(u => { this.usermap[u._id] = u.name;});
          axios.get('api/matches')
-          .then(response => (this.rawmatches = response.data));
+          .then(response => {
+            this.rawmatches = response.data;
+            this.loading = false;
+          });
       });
   },
   methods: {

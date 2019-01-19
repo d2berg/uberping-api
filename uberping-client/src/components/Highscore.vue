@@ -1,7 +1,7 @@
 <template>
   <div>
-    <md-list>
-      <md-list-item v-for="(user, index) in users" v-bind:key="user.id">
+    <div class="grid">
+      <div class="grid-item" v-for="(user, index) in users" v-bind:key="user.id">
         <md-card>
           <md-card-header>
             <span>{{index+1}}. </span>
@@ -16,8 +16,8 @@
             </p>
           </md-card-content>
         </md-card>
-      </md-list-item>
-    </md-list>
+      </div>
+    </div>
   </div>
 </template>
 
