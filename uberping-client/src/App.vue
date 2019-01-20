@@ -21,12 +21,14 @@ import VueRouter from 'vue-router';
 import Game from './components/Game.vue';
 import Highscore from './components/Highscore.vue';
 import Matches from './components/Matches.vue';
+import Users from './components/Users.vue';
 
 const router = new VueRouter({
   routes: [
     { path: '/game', component: Game },
     { path: '/highscore', component: Highscore },
-    { path: '/matches', component: Matches }
+    { path: '/matches', component: Matches },
+    { path: '/users', component: Users }
   ]
 })
 

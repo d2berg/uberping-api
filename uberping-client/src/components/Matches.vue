@@ -2,7 +2,7 @@
   <div>
     <md-progress-bar v-if="loading" md-mode="indeterminate"></md-progress-bar>
     <md-list>
-      <md-list-item v-for="(match, index) in matches.slice(0,50)" v-bind:key="match.id">
+      <md-list-item v-for="(match) in matches.slice(0,50)" v-bind:key="match.id">
         <md-card>
           <md-card-header>
             <span>{{match.timestamp.toLocaleString()}}</span>
@@ -11,7 +11,7 @@
             <md-chip title="Winning score" class="md-primary">{{match.home}} | <b>{{match.homeScore }}</b></md-chip>
             <span> -- </span>
             <md-chip title="Losing score" class="md-accent"><b>{{match.awayScore}}</b> | {{match.away}}</md-chip>
-            <md-button @click="remove(match.id, index)" class="md-mini"><md-icon>delete</md-icon></md-button>
+            <!-- <md-button @click="remove(match.id, index)" class="md-mini"><md-icon>delete</md-icon></md-button> -->
           </md-card-content>
         </md-card>
       </md-list-item>
