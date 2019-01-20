@@ -2,7 +2,7 @@
   <div>
     <md-progress-bar v-if="loading" md-mode="indeterminate"></md-progress-bar>
     <md-list>
-      <md-list-item v-for="(match, index) in matches" v-bind:key="match.id">
+      <md-list-item v-for="(match, index) in matches.slice(0,50)" v-bind:key="match.id">
         <md-card>
           <md-card-header>
             <span>{{match.timestamp.toLocaleString()}}</span>
@@ -15,6 +15,7 @@
           </md-card-content>
         </md-card>
       </md-list-item>
+    <md-list-item>...</md-list-item>
     </md-list>
   </div>
 </template>
