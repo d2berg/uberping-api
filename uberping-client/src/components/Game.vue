@@ -3,7 +3,7 @@
   <v-progress-linear v-if="loading" :indeterminate="true"></v-progress-linear>
           <v-select label="Home player" v-model="homeUser" :items="users" item-text="name" item-value="_id">
           </v-select>
-          <v-slider v-model="homeScore" min="0" max="30"  thumb-label="always" />
+          <vue-slider v-model="homeScore" min="0" max="30" dot-size="25" tooltip="false"  />
           <v-card>
             <div class="score">
               <table><tr>
@@ -16,7 +16,7 @@
                   <span style="text-align:center;">{{homeScore}} - {{awayScore}}</span>
                 </td>
                 <td>
-                  <span>{{awayUser ? users.find(u => u._id === awayUser).name : 'away'}}</span>
+                  <span class="user">{{awayUser ? users.find(u => u._id === awayUser).name : 'away'}}</span>
                 </td>
               </tr></table>
             </div>
@@ -24,7 +24,7 @@
           
           <v-select label="Away player" v-model="awayUser" :items="users" item-text="name" item-value="_id">
           </v-select>
-          <v-slider v-model="awayScore" min="0" max="30" thumb-label="always" />
+          <vue-slider v-model="awayScore" min="0" max="30" dot-size="25" tooltip="false" />
       <br />
     <br />
     <div class="text-xs-center">
@@ -39,9 +39,13 @@
 <script>
 
 import axios from 'axios';
+import vueSlider from 'vue-slider-component'
 
 export default {
   name: 'Highscopre',
+  components: {
+    vueSlider
+  },
   data(){
     return {
       numbers: Array.apply(null, {length: 30}).map(Number.call, Number),
@@ -84,6 +88,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.user {
+  font-size: 50%;
+}
 table {
   table-layout: fixed;
 }
