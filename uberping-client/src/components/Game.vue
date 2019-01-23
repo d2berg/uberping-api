@@ -1,50 +1,39 @@
 <template>
-<md-content>
-  <md-progress-bar v-if="loading" md-mode="indeterminate"></md-progress-bar>
-      <md-card>
-      <md-card-content>
-        <md-field>
-          <label>Home player</label>
-          <md-select v-model="homeUser" md-dense>
-            <md-option v-bind:key="user._id" v-for="user in users" v-bind:value="user._id">
-            {{ user.name }}
-            </md-option>
-          </md-select>
-        </md-field>
-        <md-field v-if="homeUser">
-          <label>{{homeUser ? users.find(u => u._id === homeUser).name : 'Home'}} score</label>
-          <md-select v-model="homeScore" md-dense>
-            <md-option v-bind:key="n" v-for="n in numbers" v-bind:value="n">{{n}}</md-option>
-          </md-select>
-        </md-field>
-      </md-card-content>
-      </md-card>
+<div>
+  <v-progress-linear v-if="loading" :indeterminate="true"></v-progress-linear>
+          <v-select label="Home player" v-model="homeUser" :items="users" item-text="name" item-value="_id">
+          </v-select>
+          <v-slider v-model="homeScore" min="0" max="30"  thumb-label="always" />
+          <v-card>
+            <div class="score">
+              <table><tr>
+                <td>
+                  <span class="user">
+                  {{homeUser ? users.find(u => u._id === homeUser).name : 'home'}}
+                </span>
+                </td>
+                <td>
+                  <span style="text-align:center;">{{homeScore}} - {{awayScore}}</span>
+                </td>
+                <td>
+                  <span>{{awayUser ? users.find(u => u._id === awayUser).name : 'away'}}</span>
+                </td>
+              </tr></table>
+            </div>
+          </v-card>
+          
+          <v-select label="Away player" v-model="awayUser" :items="users" item-text="name" item-value="_id">
+          </v-select>
+          <v-slider v-model="awayScore" min="0" max="30" thumb-label="always" />
       <br />
-    <md-card>
-      <md-card-content>
-      <md-field>
-        <label>Away player</label>
-        <md-select v-model="awayUser" md-dense>
-          <md-option v-bind:key="user._id" v-for="user in users" v-bind:value="user._id">
-          {{ user.name }}
-          </md-option>
-        </md-select>
-      </md-field>
-      <md-field v-if="awayUser">
-        <label>{{awayUser ? users.find(u => u._id === awayUser).name : 'Away'}} score</label>
-        <md-select v-model="awayScore" md-dense>
-          <md-option v-bind:key="n" v-for="n in numbers" v-bind:value="n">{{n}}</md-option>
-        </md-select>
-      </md-field>
-      </md-card-content>
-    </md-card>
     <br />
-    <md-card>
-      <md-card-content>
-      <md-button class="md-primary md-raised" @click="register">{{infoText}}</md-button>
-      </md-card-content>
-    </md-card>
-    </md-content>
+    <div class="text-xs-center">
+    <v-btn round color="primary" large @click="register" dark>
+      {{infoText}}
+       <v-icon right dark>cloud_upload</v-icon>
+    </v-btn>
+  </div>
+  </div>
 </template>
 
 <script>
@@ -63,6 +52,7 @@ export default {
       users: null,
       infoText: 'Register',
       showInfo: false,
+      loading: false
     }
   },
    mounted () {
@@ -92,4 +82,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+table {
+  table-layout: fixed;
+}
+td {
+  text-align: center;
+}
+</style>
+
 

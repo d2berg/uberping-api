@@ -1,19 +1,17 @@
 <template>
-<div>
-  <md-app id="app" md-waterfall md-mode="fixed" md-scrollbar>
-    <md-app-toolbar class="md-primary">
-        <span class="md-title">uberping</span>
-    </md-app-toolbar>
-    <md-app-content>
-      <router-view />
-    </md-app-content>
-  </md-app>
-  <md-bottom-bar md-sync-route md-type="fixed">
-    <md-bottom-bar-item href="#/game" md-label="Play" md-icon="input"></md-bottom-bar-item>
-    <md-bottom-bar-item href="#/highscore" md-label="Highscore" md-icon="assessment"></md-bottom-bar-item>
-    <md-bottom-bar-item href="#/matches" md-label="Matches" md-icon="list"></md-bottom-bar-item>
-  </md-bottom-bar>
-        </div>
+  <v-app id="app">
+    <v-toolbar app dark><v-toolbar-title>uberping</v-toolbar-title></v-toolbar>
+    <v-content>
+     <v-container fluid>
+      <router-view></router-view>
+    </v-container>
+    </v-content>
+    <v-bottom-nav fixed dark value="true">
+      <v-btn href="#/game" >Play <v-icon>input</v-icon></v-btn>
+      <v-btn href="#/highscore">Highscore  <v-icon>assessment</v-icon></v-btn>
+      <v-btn href="#/matches" md-icon="list">Matches <v-icon>list</v-icon></v-btn>
+    </v-bottom-nav>
+  </v-app>
 </template>
 
 <script>
@@ -39,13 +37,6 @@ export default {
 </script>
 
 <style lang="scss">
-.md-bottom-bar {
-  position: fixed;
-  bottom: 0px;
-}
-.md-app {
-  margin-bottom: 50px;
-}
 .grid {
   display: flex;
   flex-direction: column;
@@ -56,6 +47,12 @@ export default {
     padding: 0.5em;
   }
 }
+
+.score {
+  text-align: center;
+  font-size: 48px;
+}
+
 // html, body {
 //     width: 100%;
 //     height: 100%;
@@ -63,10 +60,10 @@ export default {
 //     font-size: 18px;
 // }
 
-// table {
-//   width: 100%;
-//   text-align: center;
-// }
+table {
+  width: 100%;
+  text-align: center;
+}
 
 
 // #app {

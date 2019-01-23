@@ -1,22 +1,17 @@
 <template>
   <div>
-    <md-progress-bar v-if="loading" md-mode="indeterminate"></md-progress-bar>
-    <md-list>
-      <md-list-item v-for="(match) in matches.slice(0,50)" v-bind:key="match.id">
-        <md-card>
-          <md-card-header>
-            <span>{{match.timestamp.toLocaleString()}}</span>
-          </md-card-header>
-          <md-card-content>
-            <md-chip title="Winning score" class="md-primary">{{match.home}} | <b>{{match.homeScore }}</b></md-chip>
+    <v-progress-linear v-if="loading" :indeterminate="true"></v-progress-linear>
+    <table>
+      <tr v-for="(match) in matches.slice(0,50)" v-bind:key="match.id">
+            <td><span>{{match.timestamp.toLocaleString()}}</span></td>
+          <td>
+             <v-chip title="Winning score" color="primary">{{match.home}} | <b>{{match.homeScore }}</b></v-chip>
             <span> -- </span>
-            <md-chip title="Losing score" class="md-accent"><b>{{match.awayScore}}</b> | {{match.away}}</md-chip>
-            <!-- <md-button @click="remove(match.id, index)" class="md-mini"><md-icon>delete</md-icon></md-button> -->
-          </md-card-content>
-        </md-card>
-      </md-list-item>
-    <md-list-item>...</md-list-item>
-    </md-list>
+            <v-chip title="Losing score" color="accent"><b>{{match.awayScore}}</b> | {{match.away}}</v-chip>
+            </td>
+            <td><v-btn @click="remove(match.id)">Remove</v-btn></td>
+      </tr>
+    </table>
   </div>
 </template>
 
