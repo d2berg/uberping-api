@@ -2,12 +2,12 @@
   <v-app id="app">
     <v-toolbar app dark><v-toolbar-title>uberping</v-toolbar-title></v-toolbar>
     <v-content>
-     <v-container fluid>
+     <v-container style="margin-bottom: 40px;">
       <router-view></router-view>
     </v-container>
     </v-content>
     <v-bottom-nav fixed dark value="true">
-      <v-btn href="#/game" >Play <v-icon>input</v-icon></v-btn>
+      <v-btn href="#/" >Play <v-icon>input</v-icon></v-btn>
       <v-btn href="#/highscore">Highscore  <v-icon>assessment</v-icon></v-btn>
       <v-btn href="#/matches" md-icon="list">Matches <v-icon>list</v-icon></v-btn>
     </v-bottom-nav>
@@ -23,7 +23,7 @@ import Users from './components/Users.vue';
 
 const router = new VueRouter({
   routes: [
-    { path: '/game', component: Game },
+    { path: '/', component: Game },
     { path: '/highscore', component: Highscore },
     { path: '/matches', component: Matches },
     { path: '/users', component: Users }
@@ -48,10 +48,7 @@ export default {
   }
 }
 
-.score {
-  text-align: center;
-  font-size: 48px;
-}
+
 
 // html, body {
 //     width: 100%;

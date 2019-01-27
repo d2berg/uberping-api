@@ -1,21 +1,21 @@
 <template>
   <div>
     <v-progress-linear v-if="loading" :indeterminate="true"></v-progress-linear>
-    <div class="grid">
+    <div class="grid"  >
       <div class="grid-item" v-for="(user, index) in users" v-bind:key="user.id">
         <v-card>
           <v-card-title>
-            <h3 class="headline mb-0">{{index+1}}. </h3>
-            <h3 class="headline mb-0">{{user.name}}</h3>
+            <h2 class="headline mb-0">{{index+1}}. </h2>
+            <h2 class="headline mb-0">{{user.name}}</h2>
           </v-card-title>
           <v-card-content>
-            <v-chip text-color="white" title="Rating" color="primary">{{user.rating.toFixed(1)}} <v-icon rigtht>grade</v-icon></v-chip>
+            <v-chip small text-color="white" title="Rating" color="primary">{{user.rating.toFixed(1)}} <v-icon rigtht>grade</v-icon></v-chip>
             <svg style="vertical-align: middle; margin: 4px;" :width="sparkline.w" :height="sparkline.h">
               <path style="stroke:#555; fill: transparent;" :d="createSparkline(user)" />
             </svg>
-            <v-chip text-color="white" title="Streak" color="green"><v-icon rigtht>schedule</v-icon> {{user.streak}}</v-chip>
-            <v-chip text-color="white" title="Wins" color="primary"><v-icon rigtht>thumb_up</v-icon> {{user.wins }}</v-chip>
-            <v-chip text-color="white" title="Losses" color="red"><v-icon rigtht>thumb_down</v-icon> {{user.losses}}</v-chip>
+            <v-chip small text-color="white" title="Streak" color="green"><v-icon rigtht>schedule</v-icon> {{user.streak}}</v-chip>
+            <v-chip small text-color="white" title="Wins" color="primary"><v-icon rigtht>thumb_up</v-icon> {{user.wins }}</v-chip>
+            <v-chip small text-color="white" title="Losses" color="red"><v-icon rigtht>thumb_down</v-icon> {{user.losses}}</v-chip>
           </v-card-content>
         </v-card>
       </div>
@@ -36,7 +36,7 @@ export default {
       users: null,
       loading: false,
       sparkline: {
-        w: 80,
+        w: 60,
         h: 20
       }
     }

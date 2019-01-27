@@ -1,30 +1,36 @@
 <template>
-<div>
+<v-layout align-space-between justify-space-around column fill-height>
   <v-progress-linear v-if="loading" :indeterminate="true"></v-progress-linear>
           <v-select label="Home player" v-model="homeUser" :items="users" item-text="name" item-value="_id">
           </v-select>
-          <vue-slider v-model="homeScore" min="0" max="30" dot-size="25" tooltip="false"  />
-          <v-card>
-            <div class="score">
+          <vue-slider style="margin: 2em 1em;" v-model="homeScore" min="0" max="30" dot-size="25" tooltip="false"  />
+          <v-card style="margin-bottom: 1em;">
+            <div class="score" v-if="!homeUser || !awayUser">
+              <span>Select players.</span>
+            </div>
+            <div class="score" v-if="homeUser && awayUser">
               <table><tr>
                 <td>
                   <span class="user">
                   {{homeUser ? users.find(u => u._id === homeUser).name : 'home'}}
                 </span>
-                </td>
-                <td>
-                  <span style="text-align:center;">{{homeScore}} - {{awayScore}}</span>
+               
                 </td>
                 <td>
                   <span class="user">{{awayUser ? users.find(u => u._id === awayUser).name : 'away'}}</span>
                 </td>
-              </tr></table>
+              </tr>
+              <tr>
+                <td><span style="text-align:center;">{{homeScore}}</span></td>
+                <td><span>{{awayScore}}</span></td>
+                </tr>
+              </table>
             </div>
           </v-card>
           
           <v-select label="Away player" v-model="awayUser" :items="users" item-text="name" item-value="_id">
           </v-select>
-          <vue-slider v-model="awayScore" min="0" max="30" dot-size="25" tooltip="false" />
+          <vue-slider style="margin: 2em 1em;" v-model="awayScore" min="0" max="30" dot-size="25" tooltip="false" />
       <br />
     <br />
     <div class="text-xs-center">
@@ -33,7 +39,7 @@
        <v-icon right dark>cloud_upload</v-icon>
     </v-btn>
   </div>
-  </div>
+</v-layout>
 </template>
 
 <script>
@@ -42,7 +48,7 @@ import axios from 'axios';
 import vueSlider from 'vue-slider-component'
 
 export default {
-  name: 'Highscopre',
+  name: 'Highscore',
   components: {
     vueSlider
   },
@@ -88,6 +94,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.score {
+  text-align: center;
+  font-size: 3em;
+}
 .user {
   font-size: 50%;
 }
@@ -96,6 +106,7 @@ table {
 }
 td {
   text-align: center;
+  overflow: auto;
 }
 </style>
 

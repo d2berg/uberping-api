@@ -3,13 +3,14 @@
     <v-progress-linear v-if="loading" :indeterminate="true"></v-progress-linear>
     <table>
       <tr v-for="(match) in matches.slice(0,50)" v-bind:key="match.id">
-            <td><span>{{match.timestamp.toLocaleString()}}</span></td>
+          <td><span>{{match.timestamp.toLocaleString()}}</span></td>
+          <td>{{match.home}}</td>
+          <td><b>{{match.homeScore }}</b></td>
+          <td>{{match.away}}</td>
+          <td><b>{{match.awayScore }}</b></td>
           <td>
-             <v-chip title="Winning score" color="primary">{{match.home}} | <b>{{match.homeScore }}</b></v-chip>
-            <span> -- </span>
-            <v-chip title="Losing score" color="accent"><b>{{match.awayScore}}</b> | {{match.away}}</v-chip>
-            </td>
-            <td><v-btn @click="remove(match.id)">Remove</v-btn></td>
+            <v-btn @click="remove(match.id)"><v-icon>delete</v-icon></v-btn>
+          </td>
       </tr>
     </table>
   </div>
@@ -46,7 +47,10 @@ export default {
   methods: {
     remove(id){
       const index = this.rawmatches.findIndex(m => m._id === id);
-      axios.delete(`api/matches/${id}`).then(() => this.rawmatches.splice(index, 1))
+      const doit = confirm("sure?");
+      if(doit){
+        axios.delete(`api/matches/${id}`).then(() => this.rawmatches.splice(index, 1));
+      }
     }
   },
   computed: {
@@ -73,8 +77,15 @@ export default {
 h3 {
   margin: 40px 0 0;
 }
+table {
+  font-size: 90%;
+}
 .bold {
   font-weight: bold;
+}
+td {
+  padding: 5px 0px;
+  border-bottom: 1px solid #999;
 }
 ul {
   list-style-type: none;
